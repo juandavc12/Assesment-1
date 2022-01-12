@@ -1,31 +1,41 @@
-/* eslint-disable object-curly-newline */
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+/* eslint-disable */
+import React, { useState, useEffect } from 'react';
+import Navigation from '../components/navigation';
+import { Card, Row, Col } from 'react-bootstrap';
+import DetailButton from '../components/detailButton';
+
+const URL = "https://fakestoreapi.com/products";
+
 
 export default function Home() {
-  const [dropdown, setDropdown] = useState(false);
+  const [cards, setCards] = useState([]);
 
-  const abrirCerrarDropdown = () => {
-    setDropdown(!dropdown);
-  };
+  useEffect(() => {
+    fetch(URL)
+      .then((response) => response.json())
+      .then((data) => setCards(data));
+  }, []);
+
   return (
-    <div className="Header">
-      <h2>ASSESMENT I</h2>
-      <Dropdown className="dropdown" isOpen={dropdown} toggle={abrirCerrarDropdown}>
-        <DropdownToggle caret>
-          MENU
-        </DropdownToggle>
+    <>
+    <Navigation />
+      <h1 >Products</h1>
+      <Row xs={1} md={3} className="g-4">
+        {cards.map(function (card) {
+          return (
+            <Col>
+            <Card style={{ width: '18rem' }} key={card.id}>
+              <Card.Img variant="top" src={card.image} class="img-fluid"/>
+              <Card.Body>
+              <Card.Title>{card.title}</Card.Title>
+              <DetailButton {...card}/>
+              </Card.Body>
+            </Card>
+            </Col>
+          );
+        })}
+      </Row>
 
-        <DropdownMenu>
-          <DropdownItem header>Navigation</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>Home</DropdownItem>
-          <DropdownItem>Product Details</DropdownItem>
-          <DropdownItem>About</DropdownItem>
-
-        </DropdownMenu>
-      </Dropdown>
-    </div>
+    </>
   );
 }
