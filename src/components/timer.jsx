@@ -1,14 +1,13 @@
 /* eslint-disable */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 export default function Timer({ blocked }) {
   const random = () => {
-    let id = Math.floor(Math.random() * 2);
+    const id = Math.floor(Math.random() * 2);
     if (id === 0) {
       return { minutes: 1, seconds: 0 };
-    } else {
-      return { minutes: 3, seconds: 0 };
     }
+    return { minutes: 3, seconds: 0 };
   };
 
   const minSec = random();
@@ -21,7 +20,6 @@ export default function Timer({ blocked }) {
     if (mins === 0 && secs === 0) {
       setTime([0, 0]);
       blocked();
-      return;
     } else if (secs === 0) {
       setTime([mins - 1, 59]);
     } else {
